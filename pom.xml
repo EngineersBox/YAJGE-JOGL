@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.engineersbox</groupId>
+	<artifactId>yajgejogl</artifactId>
+	<version>0.1.0</version>
+	<packaging>jar</packaging>
+
+	<name>YAJGE JOGL</name>
+
+    <properties>
+        <!-- Versions -->
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+		<commons-lang3.version>3.12.0</commons-lang3.version>
+		<eclipse.colections.version>11.1.0</eclipse.colections.version>
+		<commons-collections.version>4.4</commons-collections.version>
+		<commons-io.version>2.11.0</commons-io.version>
+		<reflections.version>0.10.2</reflections.version>
+		<typesafe-config.version>1.4.2</typesafe-config.version>
+		<typesafe.version>1.0.0</typesafe.version>
+		<joml.version>1.10.4</joml.version>
+		<log4j-core.version>2.19.0</log4j-core.version>
+		<jocl.version>2.0.4</jocl.version>
+		<jogl.version>2.3.2</jogl.version>
+		<gluegen.version>2.3.2</gluegen.version>
+
+        <!-- Java 18 -->
+        <java.version>18</java.version>
+
+        <!-- Encoding -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>18</maven.compiler.source>
+        <maven.compiler.target>18</maven.compiler.target>
+    </properties>
+
+	<dependencies>
+		<!-- JOCL -->
+		<dependency>
+			<groupId>org.jocl</groupId>
+			<artifactId>jocl</artifactId>
+			<version>${jocl.version}</version>
+		</dependency>
+		<!-- JOGL -->
+		<dependency>
+			<groupId>org.jogamp.jogl</groupId>
+			<artifactId>jogl-all-main</artifactId>
+			<version>${jogl.version}</version>
+		</dependency>
+		<!-- Gluegen -->
+		<dependency>
+			<groupId>org.jogamp.gluegen</groupId>
+			<artifactId>gluegen-rt-main</artifactId>
+			<version>${gluegen.version}</version>
+		</dependency>
+		<!-- Apache Commons Utils -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+		<!-- Apache Commons IO -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
+		</dependency>
+
+		<!-- Apache Commons Collections -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>${commons-collections.version}</version>
+		</dependency>
+		<!-- Eclipse Collections API -->
+		<dependency>
+			<groupId>org.eclipse.collections</groupId>
+			<artifactId>eclipse-collections-api</artifactId>
+			<version>${eclipse.colections.version}</version>
+		</dependency>
+		<!-- Eclipse Collections -->
+		<dependency>
+			<groupId>org.eclipse.collections</groupId>
+			<artifactId>eclipse-collections</artifactId>
+			<version>${eclipse.colections.version}</version>
+		</dependency>
+		<!-- Reflection Utils -->
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>${reflections.version}</version>
+		</dependency>
+		<!-- HOCON Typesafe -->
+		<dependency>
+			<groupId>com.typesafe</groupId>
+			<artifactId>config</artifactId>
+			<version>${typesafe-config.version}</version>
+		</dependency>
+		<!-- JOML -->
+		<dependency>
+			<groupId>org.joml</groupId>
+			<artifactId>joml</artifactId>
+			<version>${joml.version}</version>
+		</dependency>
+		<!-- log4j IO Streams -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-iostreams</artifactId>
+			<version>${log4j-core.version}</version>
+		</dependency>
+		<!-- log4j api -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${log4j-core.version}</version>
+		</dependency>
+		<!-- log4j core -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j-core.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- Compiler for targeted version compilation -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>18</source>
+					<target>18</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<shadedArtifactAttached>true</shadedArtifactAttached>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>com.engineersbox.yajgejogl.Main</mainClass>
+								</transformer>
+							</transformers>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+									</excludes>
+								</filter>
+							</filters>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.github.timvlaer</groupId>
+				<artifactId>tscfg-maven-plugin</artifactId>
+				<version>${typesafe.version}</version>
+				<configuration>
+					<templateFile>src/main/resources/templates/engineConfigTemplate.conf</templateFile>
+					<packageName>com.engineersbox.yajgejogl.resources.config</packageName>
+					<outputDirectory>src/main/java</outputDirectory>
+					<className>Config</className>
+					<generateGetters>false</generateGetters>
+					<useOptionals>true</useOptionals>
+					<useDurations>true</useDurations>
+				</configuration>
+				<executions>
+					<execution>
+						<id>tscfg-sources</id>
+						<goals>
+							<goal>generate-config-class</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
